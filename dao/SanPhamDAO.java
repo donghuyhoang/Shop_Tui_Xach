@@ -13,9 +13,9 @@ public class SanPhamDAO {
 	public List<SanPhamDTO> getAllSanPhamDTO() {
         List<SanPhamDTO> list = new ArrayList<>();
         String sql = "SELECT sp.MaSP, sp.TenSP, l.TenLoai, sp.ChatLieu, th.TenTH, sp.SoLuong, sp.Gia, sp.SoLuongDaBan "
-                   + "FROM SanPham sp "
-                   + "LEFT JOIN LoaiTui l ON sp.MaLoai = l.MaLoai "
-                   + "LEFT JOIN ThuongHieu th ON sp.MaTH = th.MaTH";
+                + "FROM SanPham sp "
+                + "LEFT JOIN LoaiTui l ON sp.MaLoai = l.MaLoai "
+                + "LEFT JOIN ThuongHieu th ON sp.MaTH = th.MaTH";
                    
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql);
@@ -130,11 +130,11 @@ public class SanPhamDAO {
     public List<SanPhamDTO> searchAndSort(String tenSP, String tenTH, int giaIndex, int sortIndex) {
         List<SanPhamDTO> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
-            "SELECT sp.MaSP, sp.TenSP, l.TenLoai, th.TenTH, sp.SoLuong, sp.Gia, sp.SoLuongDaBan " +
-            "FROM SanPham sp " +
-            "LEFT JOIN LoaiTui l ON sp.MaLoai = l.MaLoai " +
-            "LEFT JOIN ThuongHieu th ON sp.MaTH = th.MaTH " +
-            "WHERE sp.TenSP LIKE ? "
+        	    "SELECT sp.MaSP, sp.TenSP, l.TenLoai, sp.ChatLieu, th.TenTH, sp.SoLuong, sp.Gia, sp.SoLuongDaBan " +
+        	    "FROM SanPham sp " +
+        	    "LEFT JOIN LoaiTui l ON sp.MaLoai = l.MaLoai " +
+        	    "LEFT JOIN ThuongHieu th ON sp.MaTH = th.MaTH " +
+        	    "WHERE sp.TenSP LIKE ? "
         );
 
         if (tenTH != null && !tenTH.equals("Tất cả")) {
@@ -174,4 +174,14 @@ public class SanPhamDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }    
+    public boolean truTonKho(String maSP, int soLuongMua) {
+        String sql = "UPDATE SanPham SET SoLuong = SoLuong - ?, SoLuongDaBan = SoLuongDaBan + ? WHERE MaSP = ?";
+        try (Connection conn = ConnectionJDBCUtil.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, soLuongMua);
+            pst.setInt(2, soLuongMua);
+            pst.setString(3, maSP);
+            return pst.executeUpdate() > 0;
+        } catch (Exception e) { e.printStackTrace(); return false; }
+    }
 }

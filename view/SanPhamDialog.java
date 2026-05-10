@@ -154,6 +154,7 @@ public class SanPhamDialog extends JDialog {
 		txtTenSP.setText(sp.getTenSP());
 		txtSoLuong.setText(String.valueOf(sp.getSoLuongConLai()));
 		txtGia.setText(String.valueOf(sp.getGia()));
+		txtChatLieu.setText(sp.getChatLieu());
 		
 		// Ép ComboBox chọn đúng mục tương ứng với dữ liệu cũ
 		cbbLoai.setSelectedItem(sp.getTenLoai()); 

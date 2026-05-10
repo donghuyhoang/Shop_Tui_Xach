@@ -184,9 +184,7 @@ public class MainStaffView extends JFrame {
 		btnLamMoi.setBounds(520, 495, 90, 30);
 		panelQLSanPham.add(btnLamMoi);
 
-		// --- CARD 2: Các panel khác (Giả lập) ---
-		JPanel panelQLTaiQuay = new JPanel();
-		panelQLTaiQuay.setBackground(Color.GREEN);
+		BanHangPanel panelQLTaiQuay = new BanHangPanel(true);
 		panelCenter.add(panelQLTaiQuay, "CardTaiQuay");
 		
 		JPanel panelQLHoaDon = new JPanel();
