@@ -12,10 +12,11 @@ import utils.ConnectionJDBCUtil;
 public class SanPhamDAO {
 	public List<SanPhamDTO> getAllSanPhamDTO() {
         List<SanPhamDTO> list = new ArrayList<>();
+        
         String sql = "SELECT sp.MaSP, sp.TenSP, l.TenLoai, sp.ChatLieu, th.TenTH, sp.SoLuong, sp.Gia, sp.SoLuongDaBan "
-                + "FROM SanPham sp "
-                + "LEFT JOIN LoaiTui l ON sp.MaLoai = l.MaLoai "
-                + "LEFT JOIN ThuongHieu th ON sp.MaTH = th.MaTH";
+                + "FROM sanpham sp "
+                + "LEFT JOIN loaitui l ON sp.MaLoai = l.MaLoai "
+                + "LEFT JOIN thuonghieu th ON sp.MaTH = th.MaTH";
                    
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql);
@@ -39,8 +40,9 @@ public class SanPhamDAO {
         }
         return list;
     }
+
     public String getMaLoaiByTen(String tenLoai) {
-        String sql = "SELECT MaLoai FROM LoaiTui WHERE TenLoai = ?"; // Sửa tên bảng/cột cho đúng DB của bạn
+        String sql = "SELECT MaLoai FROM loaitui WHERE TenLoai = ?"; 
         try (java.sql.Connection conn = utils.ConnectionJDBCUtil.getConnection();
              java.sql.PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, tenLoai);
@@ -52,7 +54,7 @@ public class SanPhamDAO {
     }
 
     public String getMaTHByTen(String tenTH) {
-        String sql = "SELECT MaTH FROM ThuongHieu WHERE TenTH = ?";
+        String sql = "SELECT MaTH FROM thuonghieu WHERE TenTH = ?";
         try (java.sql.Connection conn = utils.ConnectionJDBCUtil.getConnection();
              java.sql.PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, tenTH);
@@ -62,9 +64,10 @@ public class SanPhamDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return null;
     }
+
     public List<String> getAllTenLoai() {
         List<String> list = new ArrayList<>();
-        String sql = "SELECT TenLoai FROM LoaiTui"; // Sửa bảng cho khớp DB
+        String sql = "SELECT TenLoai FROM loaitui"; 
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
@@ -72,9 +75,10 @@ public class SanPhamDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
+
     public List<String> getAllTenTH() {
         List<String> list = new ArrayList<>();
-        String sql = "SELECT TenTH FROM ThuongHieu"; // Sửa bảng cho khớp DB
+        String sql = "SELECT TenTH FROM thuonghieu"; 
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
@@ -82,22 +86,24 @@ public class SanPhamDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
+
     public boolean insert(SanPhamEntity sp) {
-        String sql = "INSERT INTO SanPham (MaSP, TenSP, MaLoai, ChatLieu, MaTH, SoLuong, Gia) VALUES (?, ?,?,?, ?, ?, ?)";
+        String sql = "INSERT INTO sanpham (MaSP, TenSP, MaLoai, ChatLieu, MaTH, SoLuong, Gia) VALUES (?, ?,?,?, ?, ?, ?)";
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, sp.getMaSP());
             pst.setString(2, sp.getTenSP());
-            pst.setString(3, sp.getMaLoai()); // Lưu Mã Loại
+            pst.setString(3, sp.getMaLoai()); 
             pst.setString(4, sp.getChatLieu());
-            pst.setString(5, sp.getMaTH());   // Lưu Mã TH
+            pst.setString(5, sp.getMaTH());   
             pst.setInt(6, sp.getSoLuongConLai());
             pst.setDouble(7, sp.getGia());
             return pst.executeUpdate() > 0;
         } catch (Exception e) { e.printStackTrace(); return false; }
     }
+
     public boolean delete(String maSP) {
-        String sql = "DELETE FROM SanPham WHERE MaSP=?";
+        String sql = "DELETE FROM sanpham WHERE MaSP=?";
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             
@@ -111,7 +117,7 @@ public class SanPhamDAO {
     }
 
     public boolean update(SanPhamEntity sp) {
-        String sql = "UPDATE SanPham SET TenSP=?, MaLoai=?, ChatLieu = ?,MaTH=?, SoLuong=?, Gia=? WHERE MaSP=?";
+        String sql = "UPDATE sanpham SET TenSP=?, MaLoai=?, ChatLieu = ?, MaTH=?, SoLuong=?, Gia=? WHERE MaSP=?";
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, sp.getTenSP());
@@ -127,13 +133,14 @@ public class SanPhamDAO {
         	e.printStackTrace(); return false; 
         }
     }
+
     public List<SanPhamDTO> searchAndSort(String tenSP, String tenTH, int giaIndex, int sortIndex) {
         List<SanPhamDTO> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
         	    "SELECT sp.MaSP, sp.TenSP, l.TenLoai, sp.ChatLieu, th.TenTH, sp.SoLuong, sp.Gia, sp.SoLuongDaBan " +
-        	    "FROM SanPham sp " +
-        	    "LEFT JOIN LoaiTui l ON sp.MaLoai = l.MaLoai " +
-        	    "LEFT JOIN ThuongHieu th ON sp.MaTH = th.MaTH " +
+        	    "FROM sanpham sp " +
+        	    "LEFT JOIN loaitui l ON sp.MaLoai = l.MaLoai " +
+        	    "LEFT JOIN thuonghieu th ON sp.MaTH = th.MaTH " +
         	    "WHERE sp.TenSP LIKE ? "
         );
 
@@ -174,8 +181,9 @@ public class SanPhamDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }    
+
     public boolean truTonKho(String maSP, int soLuongMua) {
-        String sql = "UPDATE SanPham SET SoLuong = SoLuong - ?, SoLuongDaBan = SoLuongDaBan + ? WHERE MaSP = ?";
+        String sql = "UPDATE sanpham SET SoLuong = SoLuong - ?, SoLuongDaBan = SoLuongDaBan + ? WHERE MaSP = ?";
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, soLuongMua);

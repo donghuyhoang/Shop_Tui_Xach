@@ -28,4 +28,15 @@ public class HoaDonController {
         
         return true; 
     }
+    public List<HoaDonEntity> layDanhSachHoaDon() {
+        return hdDAO.getAll();
+    }
+
+    public List<HoaDonEntity> timKiemHoaDon(String maHD, String maND, String vaiTro) {
+        return hdDAO.search(maHD, maND, vaiTro);
+    }
+
+    public List<ChiTietHoaDonEntity> layChiTietHoaDon(int maHD) {
+        return ctDAO.getByMaHD(maHD);
+    }
 }

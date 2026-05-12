@@ -187,8 +187,7 @@ public class MainStaffView extends JFrame {
 		BanHangPanel panelQLTaiQuay = new BanHangPanel(true);
 		panelCenter.add(panelQLTaiQuay, "CardTaiQuay");
 		
-		JPanel panelQLHoaDon = new JPanel();
-		panelQLHoaDon.setBackground(Color.CYAN);
+		QuanLyHoaDonPanel panelQLHoaDon = new QuanLyHoaDonPanel();
 		panelCenter.add(panelQLHoaDon, "CardHoaDon");
 		
 		JPanel panelThongKe = new JPanel();
@@ -210,6 +209,7 @@ public class MainStaffView extends JFrame {
 		
 		btnQLHoaDon.addActionListener(e -> {
 			((CardLayout) panelCenter.getLayout()).show(panelCenter, "CardHoaDon");
+			panelQLHoaDon.refreshData(); // Gọi hàm refresh để load database
 		});
 
 		btnThongKe.addActionListener(e -> {
