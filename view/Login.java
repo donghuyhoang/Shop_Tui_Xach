@@ -1,23 +1,19 @@
 package view;
-import java.awt.EventQueue;
 
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import dao.NguoiDungDAO;
 import entity.NguoiDungEntity;
-
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JOptionPane;
+
 public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -25,9 +21,6 @@ public class Login extends JFrame {
 	private JTextField textTaiKhoan;
 	private JTextField textMatKhau;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -41,9 +34,6 @@ public class Login extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Login() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -89,7 +79,9 @@ public class Login extends JFrame {
 				if(user != null) {
 					JOptionPane.showMessageDialog(Login.this, "Đăng nhập thành công! Xin chào " + user.getHoTen());
 				    Login.this.dispose(); 
-				    MainStaffView mainForm = new MainStaffView(user);
+				    
+				    // Đã xóa tham số user bị dư thừa ở đây
+				    MainStaffView mainForm = new MainStaffView();
 				    mainForm.setVisible(true);
 				}
 				else {
@@ -99,6 +91,5 @@ public class Login extends JFrame {
 		});
 		btnLogin.setBounds(163, 155, 88, 22);
 		contentPane.add(btnLogin);
-
 	}
 }
