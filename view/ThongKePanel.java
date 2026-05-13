@@ -30,55 +30,57 @@ public class ThongKePanel extends JPanel {
     public ThongKePanel() {
         setLayout(null);
 
-        // 1. KHU VỰC TỔNG QUAN (2 ô Card hiển thị số liệu)
+        // 1. KHU VỰC TỔNG QUAN (Đã nới chiều cao lên 110)
         JPanel pnlTongQuan = new JPanel();
         pnlTongQuan.setBorder(BorderFactory.createTitledBorder("Tổng Quan Doanh Thu"));
-        pnlTongQuan.setBounds(10, 10, 770, 100);
+        pnlTongQuan.setBounds(10, 10, 770, 110);
         pnlTongQuan.setLayout(null);
         add(pnlTongQuan);
 
-        // Card Doanh thu
+        // Card Doanh thu (Đã nới chiều cao và sắp xếp lại label)
         JPanel cardDoanhThu = new JPanel();
-        cardDoanhThu.setBackground(new Color(255, 228, 196)); // Màu cam nhạt
-        cardDoanhThu.setBounds(30, 20, 320, 60);
+        cardDoanhThu.setBackground(new Color(255, 228, 196)); 
+        cardDoanhThu.setBounds(30, 20, 320, 75);
         cardDoanhThu.setLayout(null);
         pnlTongQuan.add(cardDoanhThu);
 
-        JLabel lblTitleDT = new JLabel("TỔNG DOANH THU:");
+        JLabel lblTitleDT = new JLabel("TỔNG DOANH THU");
         lblTitleDT.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblTitleDT.setBounds(10, 20, 150, 20);
+        lblTitleDT.setHorizontalAlignment(SwingConstants.CENTER); // Căn giữa
+        lblTitleDT.setBounds(10, 10, 300, 20); // Chiếm trọn chiều ngang
         cardDoanhThu.add(lblTitleDT);
 
         lblDoanhThu = new JLabel("0 VNĐ");
         lblDoanhThu.setForeground(Color.RED);
-        lblDoanhThu.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lblDoanhThu.setHorizontalAlignment(SwingConstants.RIGHT);
-        lblDoanhThu.setBounds(160, 15, 150, 30);
+        lblDoanhThu.setFont(new Font("Tahoma", Font.BOLD, 22)); // Phóng to font
+        lblDoanhThu.setHorizontalAlignment(SwingConstants.CENTER); // Căn giữa
+        lblDoanhThu.setBounds(10, 35, 300, 30); // Chiếm trọn chiều ngang ở dòng 2
         cardDoanhThu.add(lblDoanhThu);
 
-        // Card Hóa đơn
+        // Card Hóa đơn (Làm tương tự Card Doanh Thu)
         JPanel cardHoaDon = new JPanel();
-        cardHoaDon.setBackground(new Color(173, 216, 230)); // Màu xanh nhạt
-        cardHoaDon.setBounds(420, 20, 320, 60);
+        cardHoaDon.setBackground(new Color(173, 216, 230)); 
+        cardHoaDon.setBounds(420, 20, 320, 75);
         cardHoaDon.setLayout(null);
         pnlTongQuan.add(cardHoaDon);
 
-        JLabel lblTitleHD = new JLabel("TỔNG SỐ HÓA ĐƠN:");
+        JLabel lblTitleHD = new JLabel("TỔNG SỐ HÓA ĐƠN");
         lblTitleHD.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblTitleHD.setBounds(10, 20, 150, 20);
+        lblTitleHD.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitleHD.setBounds(10, 10, 300, 20);
         cardHoaDon.add(lblTitleHD);
 
         lblSoHoaDon = new JLabel("0");
         lblSoHoaDon.setForeground(Color.BLUE);
-        lblSoHoaDon.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lblSoHoaDon.setHorizontalAlignment(SwingConstants.RIGHT);
-        lblSoHoaDon.setBounds(170, 15, 140, 30);
+        lblSoHoaDon.setFont(new Font("Tahoma", Font.BOLD, 22));
+        lblSoHoaDon.setHorizontalAlignment(SwingConstants.CENTER);
+        lblSoHoaDon.setBounds(10, 35, 300, 30);
         cardHoaDon.add(lblSoHoaDon);
 
-        // 2. KHU VỰC LỌC THỜI GIAN
+        // 2. KHU VỰC LỌC THỜI GIAN (Đẩy Y xuống 130)
         JPanel pnlLoc = new JPanel();
         pnlLoc.setBorder(BorderFactory.createTitledBorder("Bộ Lọc Thời Gian"));
-        pnlLoc.setBounds(10, 120, 770, 60);
+        pnlLoc.setBounds(10, 130, 770, 60);
         pnlLoc.setLayout(null);
         add(pnlLoc);
 
@@ -108,15 +110,15 @@ public class ThongKePanel extends JPanel {
         btnXem.setBounds(500, 24, 120, 25);
         pnlLoc.add(btnXem);
 
-        // 3. KHU VỰC BẢNG TOP SẢN PHẨM BÁN CHẠY
+        // 3. KHU VỰC BẢNG TOP SẢN PHẨM BÁN CHẠY (Đẩy Y xuống 200, bóp chiều cao lại 1 chút cho vừa cửa sổ)
         JPanel pnlTopSP = new JPanel();
         pnlTopSP.setBorder(BorderFactory.createTitledBorder("Top 10 Sản Phẩm Bán Chạy Nhất"));
-        pnlTopSP.setBounds(10, 190, 770, 310);
+        pnlTopSP.setBounds(10, 200, 770, 300);
         pnlTopSP.setLayout(null);
         add(pnlTopSP);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 20, 750, 280);
+        scrollPane.setBounds(10, 20, 750, 270);
         pnlTopSP.add(scrollPane);
 
         tblTopSP = new JTable();
@@ -129,7 +131,11 @@ public class ThongKePanel extends JPanel {
         scrollPane.setViewportView(tblTopSP);
 
         // ================= SỰ KIỆN =================
-        btnXem.addActionListener(e -> loadThongKe());
+        // Đã sửa lại để bấm nút Xem là tải cả 2 bảng
+        btnXem.addActionListener(e -> {
+            loadThongKe();
+            loadTopSanPham();
+        });
 
         // Load dữ liệu mặc định khi mở lên
         loadThongKe();
@@ -137,7 +143,7 @@ public class ThongKePanel extends JPanel {
     }
 
     public void loadThongKe() {
-        int thang = cbbThang.getSelectedIndex(); // 0 là Tất cả, 1 là Tháng 1...
+        int thang = cbbThang.getSelectedIndex(); 
         int nam = 0;
         if (cbbNam.getSelectedIndex() > 0) {
             nam = Integer.parseInt(cbbNam.getSelectedItem().toString());
@@ -152,14 +158,12 @@ public class ThongKePanel extends JPanel {
     }
 
     public void loadTopSanPham() {
-        // Lấy tháng năm hiện tại đang chọn
         int thang = cbbThang.getSelectedIndex();
         int nam = 0;
         if (cbbNam.getSelectedIndex() > 0) {
             nam = Integer.parseInt(cbbNam.getSelectedItem().toString());
         }
 
-        // Truyền xuống dưới controller
         List<SanPhamDTO> list = tkController.layTopBanChay(thang, nam);
         
         DefaultTableModel model = (DefaultTableModel) tblTopSP.getModel();
@@ -175,7 +179,7 @@ public class ThongKePanel extends JPanel {
             });
         }
     }    
-    // Hàm này được gọi khi chuyển tab để cập nhật số liệu lập tức
+    
     public void refreshData() {
         loadThongKe();
         loadTopSanPham();

@@ -52,13 +52,16 @@ public class HoaDonDAO {
         return list;
     }
 
-    public java.util.List<HoaDonEntity> search(String maHD, String maND, String vaiTro) {
+    public java.util.List<HoaDonEntity> search(String maHD, String maND, String vaiTro, String trangThai) {
         java.util.List<HoaDonEntity> list = new java.util.ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM hoadon WHERE 1=1 "); 
         
         if (!maHD.isEmpty()) sql.append("AND MaHD = ? ");
         if (!maND.isEmpty()) sql.append("AND MaND LIKE ? ");
         if (!vaiTro.equals("Tất cả")) sql.append("AND VaiTro = ? ");
+ 
+        if (!trangThai.equals("Tất cả")) sql.append("AND TrangThai = ? ");
+        
         sql.append("ORDER BY NgayLap DESC");
 
         try (Connection conn = ConnectionJDBCUtil.getConnection();
@@ -67,6 +70,7 @@ public class HoaDonDAO {
             if (!maHD.isEmpty()) pst.setInt(paramIndex++, Integer.parseInt(maHD));
             if (!maND.isEmpty()) pst.setString(paramIndex++, "%" + maND + "%");
             if (!vaiTro.equals("Tất cả")) pst.setString(paramIndex++, vaiTro);
+            if (!trangThai.equals("Tất cả")) pst.setString(paramIndex++, trangThai);
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {

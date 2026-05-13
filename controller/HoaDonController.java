@@ -25,7 +25,9 @@ public class HoaDonController {
     }
 
     public List<HoaDonEntity> layDanhSachHoaDon() { return hdDAO.getAll(); }
-    public List<HoaDonEntity> timKiemHoaDon(String maHD, String maND, String vaiTro) { return hdDAO.search(maHD, maND, vaiTro); }
+    public List<HoaDonEntity> timKiemHoaDon(String maHD, String maND, String vaiTro, String trangThai) { 
+        return hdDAO.search(maHD, maND, vaiTro, trangThai); 
+    }
     public List<ChiTietHoaDonEntity> layChiTietHoaDon(int maHD) { return ctDAO.getByMaHD(maHD); }
 
     // DUYỆT ĐƠN ONLINE
