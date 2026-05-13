@@ -248,11 +248,17 @@ public class BanHangPanel extends JPanel {
 				hd.setMaND(maND); 
 				hd.setTongTien(tongTien);
 				
+				// ==========================================
+				// ĐÃ CẬP NHẬT TRẠNG THÁI VÀO ĐÂY
+				// ==========================================
 				if (isStaff) {
 					hd.setVaiTro("Mua tại quầy");
+					hd.setTrangThai("Đã thanh toán"); 
 				} else {
 					hd.setVaiTro("Đặt online");
+					hd.setTrangThai("Chờ duyệt"); 
 				}
+				// ==========================================
 				
 				java.util.List<entity.ChiTietHoaDonEntity> dsChiTiet = new java.util.ArrayList<>();
 				for (int i = 0; i < cartModel.getRowCount(); i++) {

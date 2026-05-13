@@ -192,4 +192,15 @@ public class SanPhamDAO {
             return pst.executeUpdate() > 0;
         } catch (Exception e) { e.printStackTrace(); return false; }
     }
+    public boolean hoanTraTonKho(String maSP, int soLuongTra) {
+        // Cộng lại số lượng tồn kho, trừ đi số lượng đã bán
+        String sql = "UPDATE sanpham SET SoLuong = SoLuong + ?, SoLuongDaBan = SoLuongDaBan - ? WHERE MaSP = ?";
+        try (Connection conn = ConnectionJDBCUtil.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, soLuongTra);
+            pst.setInt(2, soLuongTra);
+            pst.setString(3, maSP);
+            return pst.executeUpdate() > 0;
+        } catch (Exception e) { e.printStackTrace(); return false; }
+    }
 }

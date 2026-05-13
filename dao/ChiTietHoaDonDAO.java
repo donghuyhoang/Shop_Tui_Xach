@@ -7,7 +7,7 @@ import utils.ConnectionJDBCUtil;
 
 public class ChiTietHoaDonDAO {
     public boolean insert(ChiTietHoaDonEntity ct) {
-        String sql = "INSERT INTO ChiTietHoaDon (MaHD, MaSP, SoLuong, DonGia, ThanhTien) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO chitiethoadon (MaHD, MaSP, SoLuong, DonGia, ThanhTien) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             
@@ -20,9 +20,11 @@ public class ChiTietHoaDonDAO {
             return pst.executeUpdate() > 0;
         } catch (Exception e) { e.printStackTrace(); return false; }
     }
+
+    // Lấy chi tiết để hiển thị Dialog hoặc để xử lý Hủy Đơn Hoàn Kho
     public java.util.List<ChiTietHoaDonEntity> getByMaHD(int maHD) {
         java.util.List<ChiTietHoaDonEntity> list = new java.util.ArrayList<>();
-        String sql = "SELECT * FROM ChiTietHoaDon WHERE MaHD = ?";
+        String sql = "SELECT * FROM chitiethoadon WHERE MaHD = ?";
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, maHD);

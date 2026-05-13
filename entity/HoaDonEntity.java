@@ -6,6 +6,7 @@ public class HoaDonEntity {
     private String maND;
     private double tongTien;
     private String vaiTro; 
+    private String trangThai; 
     
     public int getMaHD() { return maHD; }
     public void setMaHD(int maHD) { this.maHD = maHD; }
@@ -21,4 +22,7 @@ public class HoaDonEntity {
 
     public String getVaiTro() { return vaiTro; }
     public void setVaiTro(String vaiTro) { this.vaiTro = vaiTro; }
+
+    public String getTrangThai() { return trangThai; }
+    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
 }

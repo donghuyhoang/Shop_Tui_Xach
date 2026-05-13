@@ -8,9 +8,8 @@ import utils.ConnectionJDBCUtil;
 
 public class HoaDonDAO {
     
-    // Hàm Insert
     public int insert(HoaDonEntity hd) {
-        String sql = "INSERT INTO hoadon (MaND, TongTien, VaiTro) VALUES (?, ?, ?)"; 
+        String sql = "INSERT INTO hoadon (MaND, TongTien, VaiTro, TrangThai) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             
@@ -22,20 +21,17 @@ public class HoaDonDAO {
             
             pst.setDouble(2, hd.getTongTien());
             pst.setString(3, hd.getVaiTro());
+            pst.setString(4, hd.getTrangThai());
             
-            int affectedRows = pst.executeUpdate();
-            if (affectedRows > 0) {
+            if (pst.executeUpdate() > 0) {
                 try (ResultSet rs = pst.getGeneratedKeys()) {
                     if (rs.next()) return rs.getInt(1); 
                 }
             }
-        } catch (Exception e) { 
-            e.printStackTrace(); 
-        }
+        } catch (Exception e) { e.printStackTrace(); }
         return -1;
     }
 
-    // Hàm lấy tất cả Hóa Đơn 
     public java.util.List<HoaDonEntity> getAll() {
         java.util.List<HoaDonEntity> list = new java.util.ArrayList<>();
         String sql = "SELECT * FROM hoadon ORDER BY NgayLap DESC"; 
@@ -45,17 +41,17 @@ public class HoaDonDAO {
             while (rs.next()) {
                 HoaDonEntity hd = new HoaDonEntity();
                 hd.setMaHD(rs.getInt("MaHD"));
-                hd.setNgayLap(rs.getTimestamp("NgayLap"));
+                hd.setNgayLap(rs.getTimestamp("NgayLap")); 
                 hd.setMaND(rs.getString("MaND"));
                 hd.setTongTien(rs.getDouble("TongTien"));
                 hd.setVaiTro(rs.getString("VaiTro"));
+                hd.setTrangThai(rs.getString("TrangThai"));
                 list.add(hd);
             }
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
 
-    // Hàm tìm kiếm Hóa Đơn (Bổ sung lấy NgayLap)
     public java.util.List<HoaDonEntity> search(String maHD, String maND, String vaiTro) {
         java.util.List<HoaDonEntity> list = new java.util.ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM hoadon WHERE 1=1 "); 
@@ -76,14 +72,26 @@ public class HoaDonDAO {
                 while (rs.next()) {
                     HoaDonEntity hd = new HoaDonEntity();
                     hd.setMaHD(rs.getInt("MaHD"));
-                    hd.setNgayLap(rs.getTimestamp("NgayLap")); 
+                    hd.setNgayLap(rs.getTimestamp("NgayLap"));
                     hd.setMaND(rs.getString("MaND"));
                     hd.setTongTien(rs.getDouble("TongTien"));
                     hd.setVaiTro(rs.getString("VaiTro"));
+                    hd.setTrangThai(rs.getString("TrangThai"));
                     list.add(hd);
                 }
             }
         } catch (Exception e) { e.printStackTrace(); }
         return list;
+    }
+
+    // Hàm cập nhật trạng thái đơn hàng (Duyệt / Hủy)
+    public boolean updateTrangThai(int maHD, String trangThaiMoi) {
+        String sql = "UPDATE hoadon SET TrangThai = ? WHERE MaHD = ?";
+        try (Connection conn = ConnectionJDBCUtil.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, trangThaiMoi);
+            pst.setInt(2, maHD);
+            return pst.executeUpdate() > 0;
+        } catch (Exception e) { e.printStackTrace(); return false; }
     }
 }

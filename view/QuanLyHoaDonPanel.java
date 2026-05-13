@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,11 +14,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import controller.HoaDonController;
-import entity.ChiTietHoaDonEntity;
 import entity.HoaDonEntity;
 
 public class QuanLyHoaDonPanel extends JPanel {
@@ -27,7 +26,9 @@ public class QuanLyHoaDonPanel extends JPanel {
 	private JTextField txtTimMaND;
 	private JComboBox<String> cbbVaiTro;
 	private JTable tblHoaDon;
-	private JTable tblChiTietHD;
+	
+	private JButton btnChapNhan;
+	private JButton btnTuChoi;
 	
 	private HoaDonController hdController = new HoaDonController();
 
@@ -76,44 +77,46 @@ public class QuanLyHoaDonPanel extends JPanel {
 		pnlTimKiem.add(btnLamMoi);
 
 		JPanel pnlDS = new JPanel();
-		pnlDS.setBorder(BorderFactory.createTitledBorder("Danh sách Hóa Đơn"));
-		pnlDS.setBounds(10, 90, 770, 200);
+		pnlDS.setBorder(BorderFactory.createTitledBorder("Danh sách Hóa Đơn (Nhấn đúp chuột vào 1 dòng để xem chi tiết)"));
+		pnlDS.setBounds(10, 90, 770, 310);
 		pnlDS.setLayout(null);
 		add(pnlDS);
 		
 		JScrollPane scrollHoaDon = new JScrollPane();
-		scrollHoaDon.setBounds(10, 20, 750, 170);
+		scrollHoaDon.setBounds(10, 20, 750, 280);
 		pnlDS.add(scrollHoaDon);
 		
 		tblHoaDon = new JTable();
 		tblHoaDon.setModel(new DefaultTableModel(
 			new Object[][] {},
-			new String[] {"Mã HD", "Ngày Lập", "Mã KH (ND)", "Tổng Tiền", "Loại đơn"}
+			new String[] {"Mã HD", "Ngày Lập", "Mã KH (ND)", "Tổng Tiền", "Loại đơn", "Trạng thái"} // THÊM CỘT TRẠNG THÁI
 		) {
 			public boolean isCellEditable(int row, int column) { return false; }
 		});
 		tblHoaDon.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollHoaDon.setViewportView(tblHoaDon);
 
-		JPanel pnlChiTiet = new JPanel();
-		pnlChiTiet.setBorder(BorderFactory.createTitledBorder("Chi Tiết Hóa Đơn (Click chọn Hóa Đơn ở trên)"));
-		pnlChiTiet.setBounds(10, 300, 770, 200);
-		pnlChiTiet.setLayout(null);
-		add(pnlChiTiet);
-		
-		JScrollPane scrollChiTiet = new JScrollPane();
-		scrollChiTiet.setBounds(10, 20, 750, 170);
-		pnlChiTiet.add(scrollChiTiet);
-		
-		tblChiTietHD = new JTable();
-		tblChiTietHD.setModel(new DefaultTableModel(
-			new Object[][] {},
-			new String[] {"Mã SP", "Đơn Giá", "Số Lượng", "Thành Tiền"}
-		) {
-			public boolean isCellEditable(int row, int column) { return false; }
-		});
-		tblChiTietHD.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollChiTiet.setViewportView(tblChiTietHD);
+		JPanel pnlXuLy = new JPanel();
+		pnlXuLy.setBorder(BorderFactory.createTitledBorder("Xử lý Đơn Hàng Online"));
+		pnlXuLy.setBounds(10, 410, 770, 90);
+		pnlXuLy.setLayout(null);
+		add(pnlXuLy);
+
+		btnChapNhan = new JButton("Chấp nhận đơn");
+		btnChapNhan.setBounds(200, 25, 150, 40);
+		btnChapNhan.setBackground(new Color(50, 205, 50));
+		btnChapNhan.setForeground(Color.WHITE);
+		btnChapNhan.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnChapNhan.setEnabled(false); 
+		pnlXuLy.add(btnChapNhan);
+
+		btnTuChoi = new JButton("Từ chối / Hủy đơn");
+		btnTuChoi.setBounds(400, 25, 150, 40);
+		btnTuChoi.setBackground(Color.RED);
+		btnTuChoi.setForeground(Color.WHITE);
+		btnTuChoi.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTuChoi.setEnabled(false);
+		pnlXuLy.add(btnTuChoi);
 		
 		loadDataToTableHoaDon();
 
@@ -130,24 +133,62 @@ public class QuanLyHoaDonPanel extends JPanel {
 			}
 		});
 
-		btnLamMoi.addActionListener(e -> {
-			txtTimMaHD.setText("");
-			txtTimMaND.setText("");
-			cbbVaiTro.setSelectedIndex(0);
-			loadDataToTableHoaDon();
-			((DefaultTableModel) tblChiTietHD.getModel()).setRowCount(0); 
-		});
+		btnLamMoi.addActionListener(e -> refreshData());
 
-		tblHoaDon.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()) {
+		tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				if (e.getClickCount() == 2) { 
 					int row = tblHoaDon.getSelectedRow();
 					if (row >= 0) {
-						// Đã sửa thành int
 						int maHD = Integer.parseInt(tblHoaDon.getValueAt(row, 0).toString());
-						loadDataToTableChiTiet(maHD);
+						ChiTietHoaDonDialog dialog = new ChiTietHoaDonDialog(maHD);
+						dialog.setVisible(true);
 					}
+				}
+			}
+		});
+
+		tblHoaDon.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int row = tblHoaDon.getSelectedRow();
+				if (row >= 0) {
+					String loaiDon = tblHoaDon.getValueAt(row, 4).toString();
+					String trangThai = tblHoaDon.getValueAt(row, 5).toString();
+					
+					// Chỉ được DUYỆT hoặc HỦY khi đơn đó là Online và đang ở trạng thái "Chờ duyệt"
+					if ((loaiDon.equals("Đặt online") || loaiDon.equals("Online")) && trangThai.equals("Chờ duyệt")) {
+						btnChapNhan.setEnabled(true);
+						btnTuChoi.setEnabled(true);
+					} else {
+						btnChapNhan.setEnabled(false);
+						btnTuChoi.setEnabled(false);
+					}
+				}
+			}
+		});
+
+		btnChapNhan.addActionListener(e -> {
+			int row = tblHoaDon.getSelectedRow();
+			int maHD = Integer.parseInt(tblHoaDon.getValueAt(row, 0).toString());
+			if (hdController.duyetDonHang(maHD)) {
+				JOptionPane.showMessageDialog(this, "Đã duyệt đơn hàng thành công!");
+				loadDataToTableHoaDon();
+				btnChapNhan.setEnabled(false);
+				btnTuChoi.setEnabled(false);
+			}
+		});
+
+		btnTuChoi.addActionListener(e -> {
+			int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn hủy đơn hàng này không?\n(Sản phẩm sẽ được cộng lại vào kho)", "Xác nhận Hủy", JOptionPane.YES_NO_OPTION);
+			if(confirm == JOptionPane.YES_OPTION) {
+				int row = tblHoaDon.getSelectedRow();
+				int maHD = Integer.parseInt(tblHoaDon.getValueAt(row, 0).toString());
+				
+				if (hdController.huyDonHang(maHD)) {
+					JOptionPane.showMessageDialog(this, "Đã hủy đơn hàng và hoàn trả tồn kho thành công!");
+					loadDataToTableHoaDon();
+					btnChapNhan.setEnabled(false);
+					btnTuChoi.setEnabled(false);
 				}
 			}
 		});
@@ -173,29 +214,18 @@ public class QuanLyHoaDonPanel extends JPanel {
 				ngayLapStr, 
 				maND,
 				df.format(hd.getTongTien()) + " VNĐ",
-				hd.getVaiTro()
+				hd.getVaiTro(),
+				hd.getTrangThai() // THÊM DỮ LIỆU CỘT TRẠNG THÁI
 			});
 		}
 	}
 
-	// Đã sửa thành int maHD
-	private void loadDataToTableChiTiet(int maHD) {
-		List<ChiTietHoaDonEntity> list = hdController.layChiTietHoaDon(maHD);
-		DefaultTableModel model = (DefaultTableModel) tblChiTietHD.getModel();
-		model.setRowCount(0);
-		java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
-		
-		for (ChiTietHoaDonEntity ct : list) {
-			model.addRow(new Object[] {
-				ct.getMaSP(),
-				df.format(ct.getDonGia()),
-				ct.getSoLuong(),
-				df.format(ct.getThanhTien())
-			});
-		}
-	}
 	public void refreshData() {
-		loadDataToTableHoaDon(); // Tải lại danh sách hóa đơn từ DB
-		((DefaultTableModel) tblChiTietHD.getModel()).setRowCount(0); // Xóa trắng bảng chi tiết
+		txtTimMaHD.setText("");
+		txtTimMaND.setText("");
+		cbbVaiTro.setSelectedIndex(0);
+		loadDataToTableHoaDon(); 
+		btnChapNhan.setEnabled(false);
+		btnTuChoi.setEnabled(false);
 	}
 }
