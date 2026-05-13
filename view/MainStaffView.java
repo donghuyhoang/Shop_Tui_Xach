@@ -190,8 +190,7 @@ public class MainStaffView extends JFrame {
 		QuanLyHoaDonPanel panelQLHoaDon = new QuanLyHoaDonPanel();
 		panelCenter.add(panelQLHoaDon, "CardHoaDon");
 		
-		JPanel panelThongKe = new JPanel();
-		panelThongKe.setBackground(Color.PINK);
+		ThongKePanel panelThongKe = new ThongKePanel();
 		panelCenter.add(panelThongKe, "CardThongKe");
 
 
@@ -213,7 +212,8 @@ public class MainStaffView extends JFrame {
 		});
 
 		btnThongKe.addActionListener(e -> {
-			((CardLayout) panelCenter.getLayout()).show(panelCenter, "CardThongKe");
+		    ((CardLayout) panelCenter.getLayout()).show(panelCenter, "CardThongKe");
+		    panelThongKe.refreshData(); // Gọi hàm lấy số liệu mới
 		});
 
 		// 2. TÌM KIẾM
