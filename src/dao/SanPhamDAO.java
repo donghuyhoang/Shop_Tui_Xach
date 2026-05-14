@@ -183,13 +183,17 @@ public class SanPhamDAO {
     }    
 
     public boolean truTonKho(String maSP, int soLuongMua) {
-        String sql = "UPDATE sanpham SET SoLuong = SoLuong - ?, SoLuongDaBan = SoLuongDaBan + ? WHERE MaSP = ?";
+        // Thêm điều kiện SoLuong >= ? để MySQL tự chặn nếu kho không đủ
+        String sql = "UPDATE sanpham SET SoLuong = SoLuong - ?, SoLuongDaBan = SoLuongDaBan + ? " +
+                     "WHERE MaSP = ? AND SoLuong >= ?"; 
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, soLuongMua);
             pst.setInt(2, soLuongMua);
             pst.setString(3, maSP);
-            return pst.executeUpdate() > 0;
+            pst.setInt(4, soLuongMua); // Điều kiện: Kho hiện tại phải >= số lượng định mua
+            
+            return pst.executeUpdate() > 0; // Trả về false nếu điều kiện WHERE không khớp (hết hàng)
         } catch (Exception e) { e.printStackTrace(); return false; }
     }
     public boolean hoanTraTonKho(String maSP, int soLuongTra) {

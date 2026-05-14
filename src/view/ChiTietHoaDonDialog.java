@@ -24,7 +24,7 @@ public class ChiTietHoaDonDialog extends JDialog {
 	public ChiTietHoaDonDialog(int maHD) {
 		setTitle("Chi Tiết Hóa Đơn - Mã HD: " + maHD);
 		setBounds(100, 100, 600, 350);
-		setModal(true); // Khóa màn hình chính khi popup này hiện lên
+		setModal(true); 
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));

@@ -30,12 +30,12 @@ public class HoaDonController {
     }
     public List<ChiTietHoaDonEntity> layChiTietHoaDon(int maHD) { return ctDAO.getByMaHD(maHD); }
 
-    // DUYỆT ĐƠN ONLINE
+    // Duyệt đơn Online
     public boolean duyetDonHang(int maHD) {
         return hdDAO.updateTrangThai(maHD, "Đã thanh toán");
     }
 
-    // HỦY ĐƠN & HOÀN KHO
+    // Hủy đơn & hoàn kho
     public boolean huyDonHang(int maHD) {
         // 1. Lấy danh sách sản phẩm của hóa đơn này
         List<ChiTietHoaDonEntity> dsChiTiet = ctDAO.getByMaHD(maHD);

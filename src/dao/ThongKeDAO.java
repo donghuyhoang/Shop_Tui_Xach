@@ -61,7 +61,7 @@ public class ThongKeDAO {
             "FROM chitiethoadon ct " +
             "JOIN hoadon hd ON ct.MaHD = hd.MaHD " +
             "JOIN sanpham sp ON ct.MaSP = sp.MaSP " +
-            "WHERE hd.TrangThai = 'Đã thanh toán' " // THÊM ĐIỀU KIỆN CHỐT CHẶN Ở ĐÂY
+            "WHERE hd.TrangThai = 'Đã thanh toán' " 
         );
 
         if (thang > 0) sql.append("AND MONTH(hd.NgayLap) = ? ");

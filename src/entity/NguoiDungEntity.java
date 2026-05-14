@@ -7,6 +7,8 @@ public class NguoiDungEntity {
 	private String DiaChi;
 	private String Email;
 	private String VaiTro;
+	private String TaiKhoan;
+	private String MatKhau;
 	public String getMaND() {
 		return MaND;
 	}
@@ -43,6 +45,16 @@ public class NguoiDungEntity {
 	public void setVaiTro(String vaiTro) {
 		VaiTro = vaiTro;
 	}
-	
-	
+	public String getTaiKhoan() {
+		return TaiKhoan;
+	}
+	public void setTaiKhoan(String TaiKhoan) {
+		this.TaiKhoan = TaiKhoan;
+	}
+	public String getMatKhau() {
+		return MatKhau;
+	}
+	public void setMatKhau(String MatKhau) {
+		this.MatKhau = MatKhau;
+	}
 }
