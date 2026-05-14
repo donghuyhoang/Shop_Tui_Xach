@@ -1,4 +1,3 @@
-Dưới đây là nội dung file README.md được thiết kế chuyên nghiệp và đầy đủ thông tin dành riêng cho dự án Shop_Tui_Xach của bạn. Bạn có thể tạo một file mới tên là README.md ở thư mục gốc của project và dán nội dung này vào.
 
 👜 Dự Án Quản Lý Cửa Hàng Túi Xách (Java Swing)
 Đây là ứng dụng Desktop được xây dựng bằng ngôn ngữ Java, hỗ trợ quản lý việc bán hàng, kho túi xách và theo dõi đơn hàng dành cho cả khách hàng và nhân viên cửa hàng.
